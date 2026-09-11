@@ -1,12 +1,12 @@
 {
-  "version": "0.1",
-  "build": 2,
+  "version": "0.2",
+  "build": 3,
   "notes": {
-    "ko": "캡처하면 편집 창이 뜨기 전에 클립보드에 먼저 담깁니다. 화면 기록 권한을 켠 뒤 앱이 알아서 다시 시작합니다. 하이라이트에서 테두리를 뺐습니다.",
-    "en": "Captures land on the clipboard before the editor opens. The app restarts itself after you allow screen recording. The highlight no longer draws a border."
+    "ko": "이미 쓴 글씨를 더블클릭하면 다시 고칠 수 있습니다. 도형에 둥근 사각형과 안쪽 채우기가 생겼습니다. 채우기 진하기는 슬라이더로 조절합니다. 업데이트는 이제 컨트롤 바에서 받을지 건너뛸지 직접 고릅니다.",
+    "en": "Double-click text you already placed to edit it again. Shapes gained a rounded rectangle and an optional fill with an opacity slider. Updates now ask in the control bar instead of downloading on their own."
   },
-  "downloadURL": "https://github.com/ottlseo/awesomecut/releases/download/v0.1/awesomecut-0.1.dmg",
-  "sha256": "79628ef9dd5d8f8c97f3c217d250c87b7f3fb2e683aa316ab8213828850ed6d5",
-  "size": 920305,
+  "downloadURL": "https://github.com/ottlseo/awesomecut/releases/download/v0.2/awesomecut-0.2.dmg",
+  "sha256": "8b05b54098849197d52b1317dfdc266440524d477f8f06f0ec2550cf78130c09",
+  "size": 656296,
   "minimumSystemVersion": "13.0"
 }
