@@ -449,12 +449,14 @@ footer a:hover{color:var(--coral);}
         <p lang="en"><b>Screen recording only attaches to a newly launched app.</b> The permission you just granted does not reach the running app, so the shortcut looks like it does nothing.</p>
         <p lang="ko">앱이 권한이 켜진 것을 알아채면 이렇게 물어봅니다. <b>다시 시작</b> 을 누르면 알아서 껐다 켜집니다. 안 물어보면 메뉴바 아이콘에서 <b>종료</b> 하고 직접 다시 엽니다.</p>
         <p lang="en">The app notices the permission and asks. Press <b>Restart</b> and it quits and comes back on its own. If it does not ask, choose <b>Quit awesomecut</b> from the menu bar icon and open it again.</p>
-        <figure>
+        <p lang="en">It asks first because any editor window you left open will close.</p>
+        <!-- 이 알림창 그림은 한국어판에만 둔다. 찍힌 알림이 한국어라서 영어 쪽에 놓으면
+             본문과 그림의 말이 어긋난다. -->
+        <figure lang="ko">
           <div class="shot bare" style="max-width:270px">
-            <img src="img/restart-alert.png" alt="앱을 다시 시작해야 합니다 라는 제목과 다시 시작, 나중에 버튼이 있는 알림창" data-alt-en="An alert titled awesomecut needs to restart, with Restart and Later buttons" width="260" height="250">
+            <img src="img/restart-alert.png" alt="앱을 다시 시작해야 합니다 라는 제목과 다시 시작, 나중에 버튼이 있는 알림창" width="260" height="250">
           </div>
-          <figcaption lang="ko">열어 둔 편집 창이 닫히므로 묻고 나서 시작합니다.</figcaption>
-          <figcaption lang="en">It asks first because any editor window you left open will close.</figcaption>
+          <figcaption>열어 둔 편집 창이 닫히므로 묻고 나서 시작합니다.</figcaption>
         </figure>
       </div>
 
