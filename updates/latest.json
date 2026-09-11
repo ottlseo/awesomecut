@@ -1,12 +1,12 @@
 {
-  "version": "0.11",
+  "version": "0.1",
   "build": 2,
   "notes": {
     "ko": "캡처하면 편집 창이 뜨기 전에 클립보드에 먼저 담깁니다. 화면 기록 권한을 켠 뒤 앱이 알아서 다시 시작합니다. 하이라이트에서 테두리를 뺐습니다.",
     "en": "Captures land on the clipboard before the editor opens. The app restarts itself after you allow screen recording. The highlight no longer draws a border."
   },
-  "downloadURL": "https://github.com/ottlseo/awesomecut/releases/download/v0.11/awesomecut-0.11.dmg",
-  "sha256": "dccf9d6401d277b7170c2d3832447cd840fb54e0d570beeeeac9ae7eada077d7",
-  "size": 918028,
+  "downloadURL": "https://github.com/ottlseo/awesomecut/releases/download/v0.1/awesomecut-0.1.dmg",
+  "sha256": "79628ef9dd5d8f8c97f3c217d250c87b7f3fb2e683aa316ab8213828850ed6d5",
+  "size": 920305,
   "minimumSystemVersion": "13.0"
 }
