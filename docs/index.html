@@ -195,11 +195,11 @@ kbd{font-family:var(--mono);font-size:.86em;background:var(--card);border:1px so
   color:var(--ink);line-height:1.45;margin-bottom:.5rem;}
 .step p{margin-bottom:.6rem;}
 .step p:last-child{margin-bottom:0;}
-.step ul{margin:.3rem 0 0 1.05rem;}
-.step li{margin-bottom:.3rem;}
 
 /* 그림 */
 figure{margin:1.1rem 0 0;}
+/* 그림 뒤에 오는 문단은 캡션에 붙지 않게 띄운다. */
+figure + p{margin-top:1.1rem;}
 figcaption{font-size:.8rem;color:var(--ink-3);margin-top:.55rem;line-height:1.6;}
 .shot{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;
   box-shadow:0 14px 32px rgba(26,26,31,.08);}
@@ -344,7 +344,7 @@ footer a:hover{color:var(--coral);}
       <div class="step reveal">
         <div class="n">2</div>
         <h3>Applications 로 끌어다 놓기</h3>
-        <p>DMG 를 열면 앱과 Applications 바로가기가 나란히 있습니다. 앱을 폴더 쪽으로 끕니다. 쓰던 버전은 덮어써도 설정이 남습니다.</p>
+        <p>DMG 를 열면 앱과 Applications 바로가기가 나란히 있습니다. 앱을 폴더 쪽으로 끕니다.</p>
         <figure>
           <div class="shot bare" style="max-width:432px">
             <img src="img/dmg-drag.png" alt="DMG 창에 Applications 폴더와 awesomecut 앱이 나란히 있고 앱에서 폴더로 향하는 화살표" width="432" height="284">
@@ -357,17 +357,19 @@ footer a:hover{color:var(--coral);}
         <div class="n">3</div>
         <h3>첫 실행 경고 넘기기</h3>
         <p>앱을 처음 열면 <b>Apple 이 악성 소프트웨어를 검사할 수 없다</b>는 알림이 뜨고 열리지 않습니다. Apple 인증서로 서명·공증하지 않아서 그렇습니다. 알림을 닫고 시스템 설정에서 한 번 허용해 줍니다.</p>
-        <ul>
-          <li><b>시스템 설정</b> 을 열고 <b>개인정보 보호 및 보안</b>(Privacy &amp; Security) 을 고릅니다.</li>
-          <li><b>보안</b>(Security) 까지 내리면 <b>awesomecut 이 차단되었습니다</b> 라는 줄이 있습니다. <b>확인 없이 열기</b>(Open Anyway) 를 누릅니다.</li>
-          <li>다시 뜨는 대화상자에서 <b>확인 없이 열기</b>(Open Anyway) 를 한 번 더 누릅니다. 암호를 물으면 넣습니다.</li>
-        </ul>
+        <figure>
+          <div class="shot bare" style="max-width:416px">
+            <img src="img/open-settings.png" alt="화면 왼쪽 위 사과 메뉴를 열어 시스템 설정 항목을 고르는 화면" width="416" height="377">
+          </div>
+          <figcaption>왼쪽 위 사과 메뉴 &gt; <b>시스템 설정</b>(System Settings).</figcaption>
+        </figure>
         <figure>
           <div class="shot bare">
-            <img src="img/gatekeeper.jpg" alt="시스템 설정의 개인정보 보호 및 보안에서 차단 문구 옆의 확인 없이 열기 버튼을 누르고, 이어서 뜬 대화상자에서 확인 없이 열기를 다시 누르는 화면" width="1161" height="621">
+            <img src="img/open-anyway.jpg" alt="시스템 설정의 개인정보 보호 및 보안에서 보안까지 내려 차단 문구 옆의 확인 없이 열기 버튼을 누르고, 이어서 뜬 대화상자에서 확인 없이 열기를 다시 누르는 화면" width="1600" height="853">
           </div>
-          <figcaption>차단 줄은 앱을 한 번 열어 본 뒤에 나타납니다. 처음 한 번만 하면 다음부터는 그냥 열립니다.</figcaption>
+          <figcaption><b>개인정보 보호 및 보안</b>(Privacy &amp; Security) 에서 <b>보안</b>(Security) 까지 내리면 차단된 줄이 있습니다. <b>확인 없이 열기</b>(Open Anyway) 를 누르고, 다시 뜨는 대화상자에서 한 번 더 누릅니다. 암호를 물으면 넣습니다.</figcaption>
         </figure>
+        <p>차단된 줄은 앱을 한 번 열어 본 뒤에 나타납니다. 처음 한 번만 하면 다음부터는 그냥 열립니다.</p>
       </div>
 
       <div class="step reveal" id="permission">
@@ -435,14 +437,6 @@ footer a:hover{color:var(--coral);}
       <details>
         <summary>업데이트하면 권한을 또 물어봅니다</summary>
         <div class="a"><p>맞습니다. 인증서 없이 서명하므로 버전이 바뀌면 macOS 는 다른 앱으로 봅니다. 새 버전마다 <b>[시스템 설정] &gt; [개인정보 보호 및 보안] &gt; [화면 및 시스템 오디오 기록]</b> 에서 다시 켜 주세요.</p></div>
-      </details>
-      <details>
-        <summary>단축키가 안 먹습니다</summary>
-        <div class="a"><p>macOS 나 다른 앱이 쓰는 조합은 등록되지 않습니다. 컨트롤 바의 단축키 항목에서 다른 조합으로 바꾸세요.</p></div>
-      </details>
-      <details>
-        <summary>제거하고 싶습니다</summary>
-        <div class="a"><p>Applications 에서 휴지통으로 옮기면 됩니다. 저장소를 받아 쓰고 있다면 <code>./uninstall.sh</code> 가 LaunchAgent 까지 정리합니다.</p></div>
       </details>
     </div>
   </div>
