@@ -1,0 +1,12 @@
+<svg viewBox="238 28 204 204" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>awesomecut</title>
+  <!-- Assets/awesomecut_handwritten_logo.svg 의 마크 부분을 그대로 잘라 검정으로 쓴다. -->
+  <rect x="270" y="60" width="140" height="140" rx="18" fill="#F1EDE4"/>
+  <path d="M 250 100 Q 250 40 310 40" fill="none" stroke="#1A1A1F" stroke-width="14" stroke-linecap="round"/>
+  <path d="M 430 100 Q 430 40 370 40" fill="none" stroke="#1A1A1F" stroke-width="14" stroke-linecap="round"/>
+  <path d="M 250 160 Q 250 220 310 220" fill="none" stroke="#1A1A1F" stroke-width="14" stroke-linecap="round"/>
+  <line x1="345" y1="88" x2="345" y2="110" stroke="#1A1A1F" stroke-width="8" stroke-linecap="round"/>
+  <line x1="314" y1="98" x2="330" y2="114" stroke="#1A1A1F" stroke-width="8" stroke-linecap="round"/>
+  <line x1="304" y1="136" x2="326" y2="136" stroke="#1A1A1F" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="338,120 338,205 355,190 368,214 382,207 369,183 393,183" fill="#1A1A1F"/>
+</svg>

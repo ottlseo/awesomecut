@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>awesomecut · 설치 가이드</title>
+<meta name="description" content="⇧⌘2 로 캡처하고 바로 손보는 macOS 캡처 도구. 설치와 권한 설정 안내.">
+<link rel="icon" href="img/logo-mark.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
+
+<style>
+/* ══════════════════════ 토큰 ══════════════════════ */
+:root{
+  --paper:#FBFAF7; --card:#FFFFFF; --tint:#F4F1EA;
+  --ink:#1A1A1F; --ink-2:#55555E; --ink-3:#93938E;
+  --line:#E7E2D8; --line-2:#D6D0C2;
+  --coral:#FF6B4A; --mint:#2BB98A; --sky:#3B8FE0; --butter:#FFC94A;
+
+  --body:'Pretendard Variable',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --hand:'Gaegu','Pretendard Variable',cursive;
+
+  --maxw:900px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --step:260ms;   /* 로고 요소가 하나씩 나타나는 간격 */
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%;}
+body{
+  background:var(--paper);color:var(--ink-2);
+  font-family:var(--body);font-size:1.02rem;line-height:1.75;word-break:keep-all;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+::selection{background:rgba(255,107,74,.2);}
+:focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:6px;}
+
+/* 종이 위의 옅은 점 격자 */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(circle at 1px 1px, var(--line) 1px, transparent 0);
+  background-size:26px 26px;opacity:.55;}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(38vw 38vw at 88% 8%, rgba(255,201,74,.16), transparent 65%),
+             radial-gradient(34vw 34vw at 6% 78%, rgba(255,107,74,.1), transparent 65%);}
+
+/* ══════════════════════ 내비 ══════════════════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:1.4rem;
+  padding:.7rem clamp(1rem,4vw,2rem);
+  background:rgba(251,250,247,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);}
+nav .brand{display:flex;align-items:center;gap:.5rem;margin-right:auto;}
+nav .brand svg{width:24px;height:24px;}
+nav .brand b{font-family:var(--hand);font-size:1.5rem;font-weight:700;color:var(--ink);line-height:1;}
+nav a.lnk{font-size:.88rem;color:var(--ink-3);font-weight:500;}
+nav a.lnk:hover{color:var(--coral);}
+nav .btn{background:var(--ink);color:#fff;font-size:.84rem;font-weight:600;
+  padding:.42rem 1rem;border-radius:999px;transition:background .25s ease;}
+nav .btn:hover{background:var(--coral);}
+@media (max-width:640px){nav a.lnk{display:none;}}
+
+/* ══════════════════════ 히어로 ══════════════════════ */
+.hero{min-height:100svh;display:grid;place-items:center;padding:5rem 1.2rem 5.5rem;}
+.stage{display:flex;align-items:center;justify-content:center;gap:0;width:100%;max-width:1020px;}
+
+/* 로고를 다 그린 뒤에 .staged 가 붙는다. 그러면 왼쪽에 영상 자리가 열리고
+   로고는 오른쪽으로 밀려나며 작아진다. */
+.film{flex:0 0 0%;min-width:0;opacity:0;transform:translateX(-24px);
+  transition:flex-basis 1s var(--ease),opacity .8s ease .15s,transform 1s var(--ease);}
+.staged .film{flex-basis:58%;opacity:1;transform:none;}
+/* 처음에는 화면 가운데에 크게 두지만, 낮은 창에서 문구와 버튼이 잘리지 않게
+   높이로도 한 번 묶는다(로고 가로세로비가 대략 1.23:1 이다). */
+.stage .side{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
+  width:min(460px,82vw,calc(46svh * 1.23));transition:width 1s var(--ease),padding 1s var(--ease);}
+.staged .side{width:min(320px,82vw);padding-left:clamp(1rem,3vw,2.6rem);}
+
+@media (max-width:860px){
+  .stage{flex-direction:column-reverse;gap:1.8rem;}
+  .film{flex:none;width:100%;transform:translateY(18px);}
+  .staged .film{transform:none;}
+  .stage .side,.staged .side{width:min(400px,74vw);padding:0;}
+}
+
+/* ── 영상 자리 ── */
+.film .frame{position:relative;aspect-ratio:16/9;border-radius:20px;overflow:hidden;
+  background:var(--card);border:2px dashed var(--line-2);
+  display:grid;place-items:center;box-shadow:0 18px 40px rgba(26,26,31,.06);}
+.film .frame video,.film .frame iframe{width:100%;height:100%;border:0;display:block;}
+.film .play{width:64px;height:64px;border-radius:50%;background:var(--coral);display:grid;place-items:center;
+  box-shadow:0 10px 24px rgba(255,107,74,.32);}
+.film .play::after{content:"";width:0;height:0;margin-left:4px;
+  border-left:17px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;}
+.film .ph{position:absolute;bottom:1rem;font-family:var(--hand);font-size:1.15rem;color:var(--ink-3);}
+.film .cap{margin-top:.85rem;font-family:var(--mono);font-size:.72rem;color:var(--ink-3);text-align:center;}
+
+/* ── 로고: 요소가 하나씩 그려진다 ── */
+.logo{width:100%;overflow:visible;}
+.logo .el{opacity:0;transform-box:fill-box;transform-origin:center;
+  animation:drawIn .82s var(--ease) forwards;
+  animation-delay:calc(var(--i) * var(--step));}
+@keyframes drawIn{
+  from{opacity:0;transform:translateY(12px) scale(.92);}
+  to{opacity:1;transform:none;}
+}
+.logo .cursor{animation-name:cursorIn;}
+@keyframes cursorIn{
+  from{opacity:0;transform:translate(-16px,-16px) scale(.84);}
+  to{opacity:1;transform:none;}
+}
+/* 커서가 놓인 뒤 눌린 것처럼 톡 튀어나온다 */
+.logo .spark{animation-name:sparkIn;animation-duration:.5s;}
+@keyframes sparkIn{
+  from{opacity:0;transform:scale(.25);}
+  65%{opacity:1;transform:scale(1.15);}
+  to{opacity:1;transform:none;}
+}
+.logo .cap-box{opacity:0;animation:capIn .7s var(--ease) forwards;
+  animation-delay:calc(var(--i) * var(--step));}
+@keyframes capIn{from{opacity:0;}to{opacity:.6;}}
+.logo .frame-fill{fill:#F1EDE4;}
+.logo .ink{stroke:var(--ink);fill:none;stroke-linecap:round;}
+.logo .spark{stroke:var(--coral);stroke-linecap:round;}
+.logo .cursor{fill:var(--ink);}
+.logo .word{fill:var(--ink);font-family:var(--hand);font-size:90px;font-weight:700;}
+.logo .cap-box{stroke:var(--coral);fill:none;stroke-width:2.5;stroke-dasharray:5 6;}
+
+.tagline{margin-top:1.1rem;text-align:center;opacity:0;
+  animation:fadeUp .8s var(--ease) forwards;animation-delay:calc(9 * var(--step));}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+.tagline p{font-size:.98rem;color:var(--ink-2);}
+.tagline .keys{font-family:var(--mono);font-size:.8rem;color:var(--coral);
+  background:rgba(255,107,74,.1);border:1px solid rgba(255,107,74,.28);
+  padding:.12em .5em;border-radius:7px;}
+.tagline .row{display:flex;gap:.6rem;justify-content:center;margin-top:1.1rem;flex-wrap:wrap;}
+.tagline .cta{font-size:.88rem;font-weight:600;padding:.6rem 1.2rem;border-radius:999px;
+  transition:transform .25s var(--ease),box-shadow .25s ease;}
+.tagline .cta.solid{background:var(--coral);color:#fff;}
+.tagline .cta.solid:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(255,107,74,.3);}
+.tagline .cta.line{border:1px solid var(--line-2);color:var(--ink);}
+.tagline .cta.line:hover{transform:translateY(-2px);border-color:var(--coral);}
+
+.scrollcue{position:absolute;bottom:1.6rem;left:0;right:0;text-align:center;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;color:var(--ink-3);
+  opacity:0;animation:cue 1s var(--ease) forwards;animation-delay:calc(11 * var(--step));}
+.scrollcue span{display:block;font-size:1rem;animation:bob 1.8s ease-in-out infinite;}
+@keyframes cue{from{opacity:0;}to{opacity:.9;}}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
+.hero{position:relative;}
+
+@media (prefers-reduced-motion:reduce){
+  .logo .el,.logo .cap-box,.tagline,.scrollcue{animation:none;opacity:1;transform:none;}
+  .logo .cap-box{opacity:.6;}
+  .film,.stage .side{transition:none;}
+  .scrollcue span{animation:none;}
+  html{scroll-behavior:auto;}
+  .reveal{opacity:1!important;transform:none!important;}
+}
+
+/* ══════════════════════ 공용 ══════════════════════ */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(1.1rem,4vw,1.6rem);}
+.sec{padding:4.5rem 0;}
+.sec-head{margin-bottom:2.6rem;}
+.sec-head .over{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-3);display:block;margin-bottom:.6rem;}
+.sec-head h2{font-family:var(--hand);font-weight:700;font-size:clamp(2rem,5vw,2.9rem);
+  line-height:1.15;color:var(--ink);}
+.sec-head h2 mark{background:linear-gradient(transparent 62%, rgba(255,201,74,.55) 62%);color:inherit;}
+.sec-head p{margin-top:.7rem;max-width:52ch;font-size:.98rem;}
+hr{border:0;height:1px;background:var(--line);}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+.reveal.in{opacity:1;transform:none;}
+.no-io .reveal{opacity:1;transform:none;}
+
+code{font-family:var(--mono);font-size:.86em;background:var(--tint);border:1px solid var(--line);
+  border-radius:5px;padding:.08em .38em;color:var(--ink);}
+kbd{font-family:var(--mono);font-size:.86em;background:var(--card);border:1px solid var(--line-2);
+  border-bottom-width:2px;border-radius:6px;padding:.1em .42em;color:var(--ink);}
+pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.95rem 1.1rem;
+  overflow-x:auto;margin:1rem 0;}
+pre code{background:none;border:0;padding:0;font-size:.82rem;line-height:1.7;color:var(--ink);}
+
+/* ══════════════════════ 설치 단계 ══════════════════════ */
+.steps{display:flex;flex-direction:column;gap:2.2rem;position:relative;}
+.steps::before{content:"";position:absolute;left:17px;top:14px;bottom:14px;width:2px;
+  border-left:2px dashed var(--line-2);}
+@media (max-width:640px){.steps::before{left:14px;}}
+.step{position:relative;padding-left:3.6rem;}
+@media (max-width:640px){.step{padding-left:2.8rem;}}
+.step .n{position:absolute;left:0;top:.1rem;width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;font-family:var(--hand);font-size:1.25rem;font-weight:700;
+  color:#fff;background:var(--coral);box-shadow:0 0 0 5px var(--paper);}
+@media (max-width:640px){.step .n{width:29px;height:29px;font-size:1.05rem;}}
+.step h3{font-family:var(--hand);font-weight:700;font-size:clamp(1.35rem,3vw,1.75rem);
+  color:var(--ink);line-height:1.3;margin-bottom:.4rem;}
+.step p{margin-bottom:.6rem;}
+.step p:last-child{margin-bottom:0;}
+.step ul{margin:.3rem 0 0 1.05rem;}
+.step li{margin-bottom:.3rem;}
+
+/* 안내 상자 */
+.note{border:1px solid var(--line);border-left:3px solid var(--c,var(--sky));border-radius:12px;
+  background:var(--card);padding:.9rem 1.1rem;margin:.9rem 0;font-size:.93rem;}
+.note b{color:var(--ink);}
+.note.warn{--c:var(--butter);}
+.note.ok{--c:var(--mint);}
+.note.stop{--c:var(--coral);}
+
+/* 그림 */
+figure{margin:1.1rem 0 0;}
+figcaption{font-size:.8rem;color:var(--ink-3);margin-top:.55rem;line-height:1.6;}
+.shot{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;
+  box-shadow:0 14px 32px rgba(26,26,31,.08);}
+.shot .tb{display:flex;align-items:center;gap:6px;padding:0 11px;height:30px;
+  background:#EFEDE9;border-bottom:1px solid rgba(0,0,0,.07);}
+.shot .tb i{width:10px;height:10px;border-radius:50%;display:block;}
+.shot .tb i:nth-child(1){background:#FF5F57;}
+.shot .tb i:nth-child(2){background:#FEBC2E;}
+.shot .tb i:nth-child(3){background:#28C840;}
+.shot .tb span{margin-left:.5rem;font-family:var(--mono);font-size:.68rem;color:#6B6B70;}
+.shot.bare{border:0;background:none;box-shadow:none;}
+.shot.bare img{border-radius:12px;box-shadow:0 12px 28px rgba(26,26,31,.14);}
+
+/* macOS 창 재현 */
+.mac{max-width:380px;background:#ECECEC;border:1px solid var(--line-2);border-radius:13px;
+  padding:1.2rem 1.3rem 1rem;text-align:center;box-shadow:0 14px 32px rgba(26,26,31,.1);color:#1A1A1A;}
+.mac .ico{width:46px;height:46px;margin:0 auto .7rem;border-radius:11px;display:grid;place-items:center;
+  background:linear-gradient(160deg,#FF8A6B,#FF5F57);font-size:1.5rem;line-height:1;}
+.mac h4{font-size:.88rem;font-weight:700;line-height:1.5;margin-bottom:.4rem;}
+.mac p{font-size:.78rem;color:#3A3A3A;line-height:1.55;}
+.mac .btns{display:flex;gap:.5rem;margin-top:1rem;}
+.mac .b{flex:1;font-size:.79rem;padding:.34rem .7rem;border-radius:7px;background:#FBFBFB;
+  border:1px solid rgba(0,0,0,.16);}
+.mac .b.def{background:#0A6CFF;border-color:#0A6CFF;color:#fff;font-weight:600;}
+
+.sys{background:#F2F2F4;border:1px solid var(--line-2);border-radius:12px;overflow:hidden;
+  box-shadow:0 14px 32px rgba(26,26,31,.1);color:#161616;}
+.sys .top{display:flex;align-items:center;gap:6px;padding:0 11px;height:31px;background:#E6E6E8;
+  border-bottom:1px solid rgba(0,0,0,.07);}
+.sys .top i{width:10px;height:10px;border-radius:50%;display:block;}
+.sys .top i:nth-child(1){background:#FF5F57;}
+.sys .top i:nth-child(2){background:#FEBC2E;}
+.sys .top i:nth-child(3){background:#28C840;}
+.sys .top span{margin-left:.5rem;font-size:.74rem;font-weight:600;color:#333;}
+.sys .bd{padding:.95rem 1rem 1.1rem;}
+.sys h5{font-size:.76rem;color:#6B6B70;font-weight:600;margin-bottom:.5rem;}
+.sys .panel{background:#fff;border-radius:9px;overflow:hidden;}
+.sys .row{display:flex;align-items:center;gap:.8rem;padding:.7rem .85rem;font-size:.83rem;}
+.sys .row+.row{border-top:1px solid rgba(0,0,0,.07);}
+.sys .row .grow{flex:1;line-height:1.5;}
+.sys .row .app{display:flex;align-items:center;gap:.5rem;font-weight:500;}
+.sys .chip{width:21px;height:21px;border-radius:6px;background:#1A1A1F;color:#fff;
+  font-family:var(--hand);font-size:.9rem;display:grid;place-items:center;line-height:1;}
+.sys .mini{font-size:.76rem;color:#6B6B70;line-height:1.5;}
+.sys .btn{font-size:.76rem;padding:.24rem .65rem;border-radius:6px;background:#FBFBFB;
+  border:1px solid rgba(0,0,0,.18);white-space:nowrap;}
+.sys .btn.hl{background:#0A6CFF;border-color:#0A6CFF;color:#fff;font-weight:600;
+  box-shadow:0 0 0 4px rgba(10,108,255,.16);}
+.sys .sw{width:36px;height:22px;border-radius:11px;background:#34C759;position:relative;flex:none;}
+.sys .sw::after{content:"";position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;
+  background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.22);}
+.sys .sw.off{background:#D6D6DA;}
+.sys .sw.off::after{right:auto;left:2px;}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;align-items:start;}
+@media (max-width:720px){.two{grid-template-columns:1fr;}}
+
+/* ══════════════════════ 문제 해결 ══════════════════════ */
+details{border-bottom:1px solid var(--line);}
+details:first-of-type{border-top:1px solid var(--line);}
+summary{cursor:pointer;list-style:none;padding:1rem .1rem;display:flex;gap:.7rem;
+  font-family:var(--hand);font-weight:700;font-size:1.15rem;color:var(--ink);}
+summary::-webkit-details-marker{display:none;}
+summary::before{content:"+";color:var(--coral);font-family:var(--mono);font-size:1rem;line-height:1.6;}
+details[open] summary::before{content:"−";}
+summary:hover{color:var(--coral);}
+details .a{padding:0 .1rem 1.2rem 1.6rem;font-size:.95rem;}
+details .a p+p{margin-top:.5rem;}
+
+/* ══════════════════════ 다운로드 ══════════════════════ */
+.dl{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1.6rem;
+  display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;justify-content:space-between;
+  box-shadow:0 14px 32px rgba(26,26,31,.05);}
+.dl h3{font-family:var(--hand);font-size:1.5rem;font-weight:700;color:var(--ink);}
+.dl .meta{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);margin-top:.35rem;}
+.dl .cta{background:var(--ink);color:#fff;font-weight:600;font-size:.9rem;
+  padding:.7rem 1.3rem;border-radius:999px;white-space:nowrap;transition:background .25s ease;}
+.dl .cta:hover{background:var(--coral);}
+
+footer{border-top:1px solid var(--line);margin-top:3rem;padding:2.2rem 0 3rem;
+  font-size:.82rem;color:var(--ink-3);}
+footer .in{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:space-between;}
+footer a:hover{color:var(--coral);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="#top">
+    <!-- 원본 로고의 마크를 그대로 검정으로 쓴다. 여기에는 빨간 표시를 넣지 않는다. -->
+    <svg viewBox="238 28 204 204" aria-hidden="true">
+      <rect x="270" y="60" width="140" height="140" rx="18" fill="#F1EDE4"/>
+      <path d="M 250 100 Q 250 40 310 40" fill="none" stroke="#1A1A1F" stroke-width="14" stroke-linecap="round"/>
+      <path d="M 430 100 Q 430 40 370 40" fill="none" stroke="#1A1A1F" stroke-width="14" stroke-linecap="round"/>
+      <path d="M 250 160 Q 250 220 310 220" fill="none" stroke="#1A1A1F" stroke-width="14" stroke-linecap="round"/>
+      <line x1="345" y1="88" x2="345" y2="110" stroke="#1A1A1F" stroke-width="8" stroke-linecap="round"/>
+      <line x1="314" y1="98" x2="330" y2="114" stroke="#1A1A1F" stroke-width="8" stroke-linecap="round"/>
+      <line x1="304" y1="136" x2="326" y2="136" stroke="#1A1A1F" stroke-width="8" stroke-linecap="round"/>
+      <polygon points="338,120 338,205 355,190 368,214 382,207 369,183 393,183" fill="#1A1A1F"/>
+    </svg>
+    <b>awesomecut</b>
+  </a>
+  <a class="lnk" href="#install">설치</a>
+  <a class="lnk" href="#trouble">문제 해결</a>
+  <a class="btn" href="#download">내려받기</a>
+</nav>
+
+<main id="top">
+
+<!-- ══════════════════════ 히어로: 로고를 다 그린 뒤 영상 자리가 열린다 ══════════════════════ -->
+<section class="hero" id="hero">
+  <div class="stage" id="stage">
+
+    <!-- 영상 자리. 촬영한 파일이 준비되면 .frame 안을 아래 중 하나로 바꾼다.
+         <video src="video/howto.mp4" controls poster="img/howto-poster.png"></video>
+         <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe> -->
+    <div class="film">
+      <div class="frame">
+        <div class="play" aria-hidden="true"></div>
+        <div class="ph">활용법 영상 · 준비 중</div>
+      </div>
+      <div class="cap">1분 만에 캡처하고 화살표 얹어 붙여넣기</div>
+    </div>
+
+    <div class="side">
+      <!-- Assets/awesomecut_handwritten_logo.svg 를 옮긴 것이다.
+           도형 · 선 · 글씨가 한꺼번에 나오지 않고 --i 순서대로 260ms 씩 밀려 그려진다. -->
+      <!-- 원본은 0 0 680 360 이지만 여백을 잘라 로고가 화면에서 더 크게 보이게 한다. -->
+      <svg class="logo" viewBox="132 8 416 338" role="img" aria-labelledby="lt ld">
+        <title id="lt">awesomecut 로고</title>
+        <desc id="ld">모서리가 열린 사각 프레임 안에 커서와 클릭 표시가 있고, 아래에 손글씨체 워드마크가 있습니다.</desc>
+
+        <rect class="el frame-fill" style="--i:0" x="270" y="60" width="140" height="140" rx="18"/>
+
+        <path class="el ink" style="--i:1" d="M 250 100 Q 250 40 310 40" stroke-width="14"/>
+        <path class="el ink" style="--i:2" d="M 430 100 Q 430 40 370 40" stroke-width="14"/>
+        <path class="el ink" style="--i:3" d="M 250 160 Q 250 220 310 220" stroke-width="14"/>
+
+        <!-- 커서가 먼저 들어오고, 클릭한 것처럼 빨간 표시가 뒤따른다. -->
+        <polygon class="el cursor" style="--i:4"
+                 points="338,120 338,205 355,190 368,214 382,207 369,183 393,183"/>
+
+        <line class="el spark" style="--i:5" x1="345" y1="88" x2="345" y2="110" stroke-width="8"/>
+        <line class="el spark" style="--i:6" x1="314" y1="98" x2="330" y2="114" stroke-width="8"/>
+        <line class="el spark" style="--i:7" x1="304" y1="136" x2="326" y2="136" stroke-width="8"/>
+
+        <text class="el word" style="--i:8" x="340" y="315" text-anchor="middle">awesomecut</text>
+
+        <!-- 마지막에 캡처 영역처럼 점선이 한 번 둘린다 -->
+        <rect class="cap-box" style="--i:9" x="222" y="18" width="236" height="236" rx="10"/>
+      </svg>
+
+      <div class="tagline">
+        <p>캡처하고 바로 손보고 붙여넣기 <span class="keys">⇧⌘2</span></p>
+        <div class="row">
+          <a class="cta solid" href="#download">내려받기</a>
+          <a class="cta line" href="#install">설치 가이드</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scrollcue">설치 가이드<span aria-hidden="true">↓</span></div>
+</section>
+
+<hr>
+
+<!-- ══════════════════════ 설치 ══════════════════════ -->
+<section class="sec" id="install">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="over">install</span>
+      <h2><mark>설치</mark>는 여섯 걸음</h2>
+      <p>서명 없는 앱이라 첫 실행 경고를 한 번 넘기고, 화면 기록 권한을 한 번 켜야 합니다. 둘 다 처음 한 번만 합니다.</p>
+    </div>
+
+    <div class="steps">
+
+      <div class="step reveal">
+        <div class="n">1</div>
+        <h3>DMG 내려받기</h3>
+        <p><a href="#download" style="color:var(--coral)">아래</a>에서 <code>awesomecut-0.11.dmg</code> 를 받습니다. 900KB, macOS 13 이상.</p>
+      </div>
+
+      <div class="step reveal">
+        <div class="n">2</div>
+        <h3>Applications 로 끌어다 놓기</h3>
+        <p>DMG 를 열면 앱과 Applications 바로가기가 나란히 있습니다. 왼쪽을 오른쪽으로 끕니다. 쓰던 버전은 덮어써도 설정이 남습니다.</p>
+      </div>
+
+      <div class="step reveal" id="gatekeeper">
+        <div class="n">3</div>
+        <h3>첫 실행 경고 넘기기</h3>
+        <p>앱을 열면 <b>개발자를 확인할 수 없다</b>는 경고가 뜹니다. Apple 인증서로 서명·공증하지 않아서 그렇습니다. 이 창에서는 열 수 없으니 닫고, 시스템 설정에서 허용합니다.</p>
+        <figure>
+          <div class="two">
+            <div>
+              <div class="mac">
+                <div class="ico">⚠︎</div>
+                <h4>“awesomecut”을(를) 열 수 없습니다.</h4>
+                <p>Apple에서 악성 소프트웨어를 검사할 수 없기 때문입니다.</p>
+                <div class="btns"><span class="b">휴지통으로 이동</span><span class="b def">완료</span></div>
+              </div>
+              <figcaption>재현 이미지. <b>완료</b> 로 닫습니다.</figcaption>
+            </div>
+            <div>
+              <div class="sys">
+                <div class="top"><i></i><i></i><i></i><span>개인정보 보호 및 보안</span></div>
+                <div class="bd">
+                  <h5>보안</h5>
+                  <div class="panel">
+                    <div class="row">
+                      <div class="grow mini">“awesomecut”은(는) 확인된 개발자가 배포한 것이 아니기 때문에 차단되었습니다.</div>
+                      <span class="btn hl">확인 없이 열기</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <figcaption>재현 이미지. <b>[시스템 설정] &gt; [개인정보 보호 및 보안]</b> 을 아래로 내리면 이 버튼이 있습니다. 앱을 한 번 열어 본 뒤에 나타납니다.</figcaption>
+            </div>
+          </div>
+        </figure>
+        <div class="note stop">
+          <b>`Mac에 손상을 입힐 수 있습니다` 가 떴다면</b> 1.0 배포본입니다. 그 문구는 넘길 수 없으니 0.11 을 받으세요.
+        </div>
+      </div>
+
+      <div class="step reveal" id="permission">
+        <div class="n">4</div>
+        <h3>화면 기록 권한 켜기</h3>
+        <p>처음 열면 설정 창이 뜹니다. 첫 항목이 화면 기록 권한입니다. macOS 설정에는 <b>화면 및 시스템 오디오 기록</b> 으로 나오는데 오디오는 녹음하지 않습니다.</p>
+        <figure>
+          <div class="two">
+            <div>
+              <div class="shot">
+                <div class="tb"><i></i><i></i><i></i><span>awesomecut 설정</span></div>
+                <img src="img/onboarding.png" alt="화면 기록 권한, 캡처 방식, 저장 위치, 자동 실행을 차례로 묻는 설정 창" width="620" height="800">
+              </div>
+              <figcaption>권한이 켜지면 초록색 문구로 바뀝니다.</figcaption>
+            </div>
+            <div>
+              <div class="sys">
+                <div class="top"><i></i><i></i><i></i><span>화면 및 시스템 오디오 기록</span></div>
+                <div class="bd">
+                  <h5>다음 응용 프로그램이 화면을 기록하도록 허용</h5>
+                  <div class="panel">
+                    <div class="row">
+                      <div class="grow app"><span class="chip">ac</span>awesomecut</div>
+                      <span class="sw"></span>
+                    </div>
+                    <div class="row">
+                      <div class="grow app"><span class="chip" style="background:#8B8B94">·</span>다른 앱</div>
+                      <span class="sw off"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <figcaption>재현 이미지. 실수로 거부했다면 여기서 직접 켭니다.</figcaption>
+            </div>
+          </div>
+        </figure>
+      </div>
+
+      <div class="step reveal" id="restart">
+        <div class="n">5</div>
+        <h3>앱 다시 시작</h3>
+        <p><b>화면 기록 권한은 새로 뜬 앱에만 붙습니다.</b> 방금 켠 권한은 실행 중인 앱에 적용되지 않아서, 단축키를 눌러도 아무 일도 없는 것처럼 보입니다.</p>
+        <p>0.11 부터는 앱이 이걸 알아채고 물어봅니다. <b>다시 시작</b> 을 누르면 알아서 껐다 켜집니다.</p>
+        <figure>
+          <div class="shot bare" style="max-width:270px">
+            <img src="img/restart-alert.png" alt="앱을 다시 시작해야 합니다 라는 제목과 다시 시작, 나중에 버튼이 있는 알림창" width="260" height="250">
+          </div>
+          <figcaption>열어 둔 편집 창이 닫히므로 묻고 나서 시작합니다.</figcaption>
+        </figure>
+      </div>
+
+      <div class="step reveal">
+        <div class="n">6</div>
+        <h3><kbd>⇧⌘2</kbd> 로 첫 캡처</h3>
+        <p>드래그해서 손을 떼면 그 그림이 <b>바로 클립보드에</b> 담기고 편집 창이 열립니다. 손본 뒤에는 <kbd>⌘C</kbd> 를 한 번 더 누릅니다. <kbd>⌘S</kbd> 는 정해 둔 폴더에 저장.</p>
+        <figure>
+          <div class="shot">
+            <div class="tb"><i></i><i></i><i></i><span>awesomecut</span></div>
+            <img src="img/editor.png" alt="위쪽에 보정 도구 툴바, 아래쪽에 클립보드 안내와 저장 버튼이 있는 편집 창" width="1144" height="760">
+          </div>
+          <figcaption>편집 창. 화살표, 도형, 하이라이트, 모자이크, 글씨, 자르기까지 열 가지 도구가 있습니다.</figcaption>
+        </figure>
+        <figure>
+          <div class="shot bare" style="max-width:420px">
+            <img src="img/control-bar.png" alt="영역, 전체 화면, 바로 저장, 단축키, 파일 열기, 설정이 한 줄로 놓인 컨트롤 바" width="480" height="62">
+          </div>
+          <figcaption>화면 아래 컨트롤 바에서 캡처 방식과 단축키를 바꿉니다. 닫으면 메뉴바 아이콘만 남습니다.</figcaption>
+        </figure>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- ══════════════════════ 문제 해결 ══════════════════════ -->
+<section class="sec" id="trouble">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="over">troubleshooting</span>
+      <h2>안 될 때</h2>
+    </div>
+    <div class="reveal">
+      <details open>
+        <summary>권한을 켰는데도 캡처가 안 됩니다</summary>
+        <div class="a"><p>앱을 껐다 켜면 됩니다. 권한은 새로 실행된 앱에만 붙습니다. 0.11 부터는 앱이 다시 시작할지 물어봅니다.</p></div>
+      </details>
+      <details>
+        <summary>`Mac에 손상을 입힐 수 있습니다` 라고 나옵니다</summary>
+        <div class="a">
+          <p>1.0 배포본에서 나오던 문구입니다. 받는 쪽 Mac 에 없는 인증서로 서명돼 있어서 Gatekeeper 가 깨진 서명으로 봅니다. 허용 버튼이 없습니다.</p>
+          <p>0.11 은 인증서 없이 배포하므로 <a href="#gatekeeper" style="color:var(--coral)">확인 없이 열기</a> 로 넘길 수 있습니다.</p>
+        </div>
+      </details>
+      <details>
+        <summary>업데이트하면 권한을 또 물어봅니다</summary>
+        <div class="a"><p>맞습니다. 인증서 없이 서명하므로 버전이 바뀌면 macOS 는 다른 앱으로 봅니다. 새 버전마다 <b>[시스템 설정] &gt; [개인정보 보호 및 보안] &gt; [화면 및 시스템 오디오 기록]</b> 에서 다시 켜 주세요.</p></div>
+      </details>
+      <details>
+        <summary>단축키가 안 먹습니다</summary>
+        <div class="a"><p>macOS 나 다른 앱이 쓰는 조합은 등록되지 않습니다. 컨트롤 바의 단축키 항목에서 다른 조합으로 바꾸세요.</p></div>
+      </details>
+      <details>
+        <summary>제거하고 싶습니다</summary>
+        <div class="a"><p>Applications 에서 휴지통으로 옮기면 됩니다. 저장소를 받아 쓰고 있다면 <code>./uninstall.sh</code> 가 LaunchAgent 까지 정리합니다.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- ══════════════════════ 다운로드 ══════════════════════ -->
+<section class="sec" id="download">
+  <div class="wrap">
+    <div class="dl reveal">
+      <div>
+        <h3>awesomecut 0.11</h3>
+        <div class="meta">DMG 900KB · macOS 13 이상 · Apple Silicon &amp; Intel</div>
+      </div>
+      <a class="cta" href="https://github.com/ottlseo/awesomecut/releases/latest">GitHub Releases →</a>
+    </div>
+    <div class="note reveal">
+      <b>1.0 을 쓰고 있다면</b> 업데이트 알림이 가지 않습니다. 위에서 직접 받아 덮어써 주세요. 버전 이름은 1.0 → 0.11 로 내려간 것처럼 보이지만 빌드 번호는 올라갑니다.
+    </div>
+    <details class="reveal" style="border-top:1px solid var(--line)">
+      <summary>직접 빌드하기</summary>
+      <div class="a">
+        <p>Xcode 없이 swiftc 만으로 빌드합니다.</p>
+        <pre><code>git clone https://github.com/ottlseo/awesomecut.git
+cd awesomecut
+./build.sh     # awesomecut.app 생성
+./install.sh   # LaunchAgent 등록 후 실행</code></pre>
+      </div>
+    </details>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap in">
+    <div>awesomecut · Swift + AppKit</div>
+    <div><a href="https://github.com/ottlseo/awesomecut">GitHub</a> · <a href="#top">위로</a></div>
+  </div>
+</footer>
+
+<script>
+// 로고를 다 그린 뒤에 영상 자리를 연다. 마지막 요소(--i:9)가 끝나는 시점에 맞춘다.
+(function () {
+  const stage = document.getElementById('stage');
+  const step = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--step')) || 260;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  setTimeout(() => stage.classList.add('staged'), reduce ? 0 : step * 9 + 900);
+})();
+
+// 스크롤에 맞춰 본문을 띄운다. IntersectionObserver 가 없으면 전부 보이게 둔다.
+if (!('IntersectionObserver' in window)) {
+  document.documentElement.classList.add('no-io');
+} else {
+  const io = new IntersectionObserver((es) => {
+    for (const e of es) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+}
+</script>
+</body>
+</html>
