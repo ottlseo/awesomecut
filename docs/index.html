@@ -197,14 +197,6 @@ kbd{font-family:var(--mono);font-size:.86em;background:var(--card);border:1px so
 .step ul{margin:.3rem 0 0 1.05rem;}
 .step li{margin-bottom:.3rem;}
 
-/* 안내 상자 */
-.note{border:1px solid var(--line);border-left:3px solid var(--c,var(--sky));border-radius:12px;
-  background:var(--card);padding:.9rem 1.1rem;margin:.9rem 0;font-size:.93rem;}
-.note b{color:var(--ink);}
-.note.warn{--c:var(--butter);}
-.note.ok{--c:var(--mint);}
-.note.stop{--c:var(--coral);}
-
 /* 그림 */
 figure{margin:1.1rem 0 0;}
 figcaption{font-size:.8rem;color:var(--ink-3);margin-top:.55rem;line-height:1.6;}
@@ -219,50 +211,6 @@ figcaption{font-size:.8rem;color:var(--ink-3);margin-top:.55rem;line-height:1.6;
 .shot .tb span{margin-left:.5rem;font-family:var(--mono);font-size:.68rem;color:#6B6B70;}
 .shot.bare{border:0;background:none;box-shadow:none;}
 .shot.bare img{border-radius:12px;box-shadow:0 12px 28px rgba(26,26,31,.14);}
-
-/* macOS 창 재현 */
-.mac{max-width:380px;background:#ECECEC;border:1px solid var(--line-2);border-radius:13px;
-  padding:1.2rem 1.3rem 1rem;text-align:center;box-shadow:0 14px 32px rgba(26,26,31,.1);color:#1A1A1A;}
-.mac .ico{width:46px;height:46px;margin:0 auto .7rem;border-radius:11px;display:grid;place-items:center;
-  background:linear-gradient(160deg,#FF8A6B,#FF5F57);font-size:1.5rem;line-height:1;}
-.mac h4{font-size:.88rem;font-weight:700;line-height:1.5;margin-bottom:.4rem;}
-.mac p{font-size:.78rem;color:#3A3A3A;line-height:1.55;}
-.mac .btns{display:flex;gap:.5rem;margin-top:1rem;}
-.mac .b{flex:1;font-size:.79rem;padding:.34rem .7rem;border-radius:7px;background:#FBFBFB;
-  border:1px solid rgba(0,0,0,.16);}
-.mac .b.def{background:#0A6CFF;border-color:#0A6CFF;color:#fff;font-weight:600;}
-
-.sys{background:#F2F2F4;border:1px solid var(--line-2);border-radius:12px;overflow:hidden;
-  box-shadow:0 14px 32px rgba(26,26,31,.1);color:#161616;}
-.sys .top{display:flex;align-items:center;gap:6px;padding:0 11px;height:31px;background:#E6E6E8;
-  border-bottom:1px solid rgba(0,0,0,.07);}
-.sys .top i{width:10px;height:10px;border-radius:50%;display:block;}
-.sys .top i:nth-child(1){background:#FF5F57;}
-.sys .top i:nth-child(2){background:#FEBC2E;}
-.sys .top i:nth-child(3){background:#28C840;}
-.sys .top span{margin-left:.5rem;font-size:.74rem;font-weight:600;color:#333;}
-.sys .bd{padding:.95rem 1rem 1.1rem;}
-.sys h5{font-size:.76rem;color:#6B6B70;font-weight:600;margin-bottom:.5rem;}
-.sys .panel{background:#fff;border-radius:9px;overflow:hidden;}
-.sys .row{display:flex;align-items:center;gap:.8rem;padding:.7rem .85rem;font-size:.83rem;}
-.sys .row+.row{border-top:1px solid rgba(0,0,0,.07);}
-.sys .row .grow{flex:1;line-height:1.5;}
-.sys .row .app{display:flex;align-items:center;gap:.5rem;font-weight:500;}
-.sys .chip{width:21px;height:21px;border-radius:6px;background:#1A1A1F;color:#fff;
-  font-family:var(--hand);font-size:.9rem;display:grid;place-items:center;line-height:1;}
-.sys .mini{font-size:.76rem;color:#6B6B70;line-height:1.5;}
-.sys .btn{font-size:.76rem;padding:.24rem .65rem;border-radius:6px;background:#FBFBFB;
-  border:1px solid rgba(0,0,0,.18);white-space:nowrap;}
-.sys .btn.hl{background:#0A6CFF;border-color:#0A6CFF;color:#fff;font-weight:600;
-  box-shadow:0 0 0 4px rgba(10,108,255,.16);}
-.sys .sw{width:36px;height:22px;border-radius:11px;background:#34C759;position:relative;flex:none;}
-.sys .sw::after{content:"";position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;
-  background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.22);}
-.sys .sw.off{background:#D6D6DA;}
-.sys .sw.off::after{right:auto;left:2px;}
-
-.two{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;align-items:start;}
-@media (max-width:720px){.two{grid-template-columns:1fr;}}
 
 /* ══════════════════════ 문제 해결 ══════════════════════ */
 details{border-bottom:1px solid var(--line);}
@@ -395,79 +343,41 @@ footer a:hover{color:var(--coral);}
       <div class="step reveal">
         <div class="n">2</div>
         <h3>Applications 로 끌어다 놓기</h3>
-        <p>DMG 를 열면 앱과 Applications 바로가기가 나란히 있습니다. 왼쪽을 오른쪽으로 끕니다. 쓰던 버전은 덮어써도 설정이 남습니다.</p>
+        <p>DMG 를 열면 앱과 Applications 바로가기가 나란히 있습니다. 앱을 폴더 쪽으로 끕니다. 쓰던 버전은 덮어써도 설정이 남습니다.</p>
+        <figure>
+          <div class="shot bare" style="max-width:432px">
+            <img src="img/dmg-drag.png" alt="DMG 창에 Applications 폴더와 awesomecut 앱이 나란히 있고 앱에서 폴더로 향하는 화살표" width="432" height="284">
+          </div>
+          <figcaption>여기서 바로 열지 말고, 옮긴 뒤 Applications 에서 엽니다.</figcaption>
+        </figure>
       </div>
 
       <div class="step reveal" id="gatekeeper">
         <div class="n">3</div>
         <h3>첫 실행 경고 넘기기</h3>
-        <p>앱을 열면 <b>개발자를 확인할 수 없다</b>는 경고가 뜹니다. Apple 인증서로 서명·공증하지 않아서 그렇습니다. 이 창에서는 열 수 없으니 닫고, 시스템 설정에서 허용합니다.</p>
+        <p>앱을 처음 열면 <b>Apple 이 악성 소프트웨어를 검사할 수 없다</b>는 알림이 뜨고 열리지 않습니다. Apple 인증서로 서명·공증하지 않아서 그렇습니다. 알림을 닫고 시스템 설정에서 한 번 허용해 줍니다.</p>
+        <ul>
+          <li><b>시스템 설정</b> 을 열고 <b>개인정보 보호 및 보안</b>(Privacy &amp; Security) 을 고릅니다.</li>
+          <li><b>보안</b>(Security) 까지 내리면 <b>awesomecut 이 차단되었습니다</b> 라는 줄이 있습니다. <b>확인 없이 열기</b>(Open Anyway) 를 누릅니다.</li>
+          <li>다시 뜨는 대화상자에서 <b>확인 없이 열기</b>(Open Anyway) 를 한 번 더 누릅니다. 암호를 물으면 넣습니다.</li>
+        </ul>
         <figure>
-          <div class="two">
-            <div>
-              <div class="mac">
-                <div class="ico">⚠︎</div>
-                <h4>“awesomecut”을(를) 열 수 없습니다.</h4>
-                <p>Apple에서 악성 소프트웨어를 검사할 수 없기 때문입니다.</p>
-                <div class="btns"><span class="b">휴지통으로 이동</span><span class="b def">완료</span></div>
-              </div>
-              <figcaption>재현 이미지. <b>완료</b> 로 닫습니다.</figcaption>
-            </div>
-            <div>
-              <div class="sys">
-                <div class="top"><i></i><i></i><i></i><span>개인정보 보호 및 보안</span></div>
-                <div class="bd">
-                  <h5>보안</h5>
-                  <div class="panel">
-                    <div class="row">
-                      <div class="grow mini">“awesomecut”은(는) 확인된 개발자가 배포한 것이 아니기 때문에 차단되었습니다.</div>
-                      <span class="btn hl">확인 없이 열기</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <figcaption>재현 이미지. <b>[시스템 설정] &gt; [개인정보 보호 및 보안]</b> 을 아래로 내리면 이 버튼이 있습니다. 앱을 한 번 열어 본 뒤에 나타납니다.</figcaption>
-            </div>
+          <div class="shot bare">
+            <img src="img/gatekeeper.jpg" alt="시스템 설정의 개인정보 보호 및 보안에서 차단 문구 옆의 확인 없이 열기 버튼을 누르고, 이어서 뜬 대화상자에서 확인 없이 열기를 다시 누르는 화면" width="1161" height="621">
           </div>
+          <figcaption>차단 줄은 앱을 한 번 열어 본 뒤에 나타납니다. 처음 한 번만 하면 다음부터는 그냥 열립니다.</figcaption>
         </figure>
-        <div class="note stop">
-          <b>`Mac에 손상을 입힐 수 있습니다` 가 떴다면</b> 1.0 배포본입니다. 그 문구는 넘길 수 없으니 0.11 을 받으세요.
-        </div>
       </div>
 
       <div class="step reveal" id="permission">
         <div class="n">4</div>
         <h3>화면 기록 권한 켜기</h3>
-        <p>처음 열면 설정 창이 뜹니다. 첫 항목이 화면 기록 권한입니다. macOS 설정에는 <b>화면 및 시스템 오디오 기록</b> 으로 나오는데 오디오는 녹음하지 않습니다.</p>
+        <p>앱이 열리면 설정 창이 먼저 뜹니다. 첫 항목이 화면 기록 권한입니다. <b>시스템 설정 열기</b> 를 누르면 해당 목록이 열리니 거기서 awesomecut 을 켭니다. macOS 는 이 권한을 <b>화면 및 시스템 오디오 기록</b> 으로 부르지만 오디오는 녹음하지 않습니다.</p>
         <figure>
-          <div class="two">
-            <div>
-              <div class="shot">
-                <div class="tb"><i></i><i></i><i></i><span>awesomecut 설정</span></div>
-                <img src="img/onboarding.png" alt="화면 기록 권한, 캡처 방식, 저장 위치, 자동 실행을 차례로 묻는 설정 창" width="620" height="800">
-              </div>
-              <figcaption>권한이 켜지면 초록색 문구로 바뀝니다.</figcaption>
-            </div>
-            <div>
-              <div class="sys">
-                <div class="top"><i></i><i></i><i></i><span>화면 및 시스템 오디오 기록</span></div>
-                <div class="bd">
-                  <h5>다음 응용 프로그램이 화면을 기록하도록 허용</h5>
-                  <div class="panel">
-                    <div class="row">
-                      <div class="grow app"><span class="chip">ac</span>awesomecut</div>
-                      <span class="sw"></span>
-                    </div>
-                    <div class="row">
-                      <div class="grow app"><span class="chip" style="background:#8B8B94">·</span>다른 앱</div>
-                      <span class="sw off"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <figcaption>재현 이미지. 실수로 거부했다면 여기서 직접 켭니다.</figcaption>
-            </div>
+          <div class="shot bare">
+            <img src="img/permission.jpg" alt="awesomecut 설정 창의 시스템 설정 열기 버튼과, 화면 및 시스템 오디오 기록 목록에서 awesomecut 스위치를 켠 화면" width="1484" height="1030">
           </div>
+          <figcaption>목록에 안 보이면 설정 창의 <b>화면 기록 허용</b> 을 한 번 눌러 요청을 띄웁니다. 실수로 거부했어도 여기서 켤 수 있습니다.</figcaption>
         </figure>
       </div>
 
@@ -475,7 +385,7 @@ footer a:hover{color:var(--coral);}
         <div class="n">5</div>
         <h3>앱 다시 시작</h3>
         <p><b>화면 기록 권한은 새로 뜬 앱에만 붙습니다.</b> 방금 켠 권한은 실행 중인 앱에 적용되지 않아서, 단축키를 눌러도 아무 일도 없는 것처럼 보입니다.</p>
-        <p>0.11 부터는 앱이 이걸 알아채고 물어봅니다. <b>다시 시작</b> 을 누르면 알아서 껐다 켜집니다.</p>
+        <p>앱이 권한이 켜진 것을 알아채면 이렇게 물어봅니다. <b>다시 시작</b> 을 누르면 알아서 껐다 켜집니다. 안 물어보면 메뉴바 아이콘에서 <b>종료</b> 하고 직접 다시 엽니다.</p>
         <figure>
           <div class="shot bare" style="max-width:270px">
             <img src="img/restart-alert.png" alt="앱을 다시 시작해야 합니다 라는 제목과 다시 시작, 나중에 버튼이 있는 알림창" width="260" height="250">
@@ -519,14 +429,7 @@ footer a:hover{color:var(--coral);}
     <div class="reveal">
       <details open>
         <summary>권한을 켰는데도 캡처가 안 됩니다</summary>
-        <div class="a"><p>앱을 껐다 켜면 됩니다. 권한은 새로 실행된 앱에만 붙습니다. 0.11 부터는 앱이 다시 시작할지 물어봅니다.</p></div>
-      </details>
-      <details>
-        <summary>`Mac에 손상을 입힐 수 있습니다` 라고 나옵니다</summary>
-        <div class="a">
-          <p>1.0 배포본에서 나오던 문구입니다. 받는 쪽 Mac 에 없는 인증서로 서명돼 있어서 Gatekeeper 가 깨진 서명으로 봅니다. 허용 버튼이 없습니다.</p>
-          <p>0.11 은 인증서 없이 배포하므로 <a href="#gatekeeper" style="color:var(--coral)">확인 없이 열기</a> 로 넘길 수 있습니다.</p>
-        </div>
+        <div class="a"><p>앱을 껐다 켜면 됩니다. 권한은 새로 실행된 앱에만 붙습니다. 앱이 알아채면 다시 시작할지 물어봅니다.</p></div>
       </details>
       <details>
         <summary>업데이트하면 권한을 또 물어봅니다</summary>
