@@ -13,9 +13,7 @@
 [Releases](https://github.com/ottlseo/awesomecut/releases/latest) 에서 `awesomecut-<버전>.dmg` 를
 받습니다. macOS 13 이상, Apple Silicon 과 Intel 모두 됩니다.
 
-## 이 저장소에 있는 것
-
-배포용 저장소입니다. 앱 소스는 여기 없습니다.
+이 저장소는 배포용 저장소입니다. 
 
 | 경로 | 용도 |
 | --- | --- |
