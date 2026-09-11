@@ -1,12 +1,12 @@
 {
-  "version": "0.2",
-  "build": 3,
+  "version": "0.3",
+  "build": 4,
   "notes": {
-    "ko": "이미 쓴 글씨를 더블클릭하면 다시 고칠 수 있습니다. 도형에 둥근 사각형과 안쪽 채우기가 생겼습니다. 채우기 진하기는 슬라이더로 조절합니다. 업데이트는 이제 컨트롤 바에서 받을지 건너뛸지 직접 고릅니다.",
-    "en": "Double-click text you already placed to edit it again. Shapes gained a rounded rectangle and an optional fill with an opacity slider. Updates now ask in the control bar instead of downloading on their own."
+    "ko": "업데이트를 앱이 직접 갈아 끼웁니다. 받는 진행이 컨트롤 바에 보이고 다 되면 알아서 다시 시작합니다. 알림 버튼이 파란색과 흰색으로 제대로 보입니다.",
+    "en": "The app now installs updates itself. Progress shows in the control bar and it restarts when done. The prompt buttons now show their blue and white fills."
   },
-  "downloadURL": "https://github.com/ottlseo/awesomecut/releases/download/v0.2/awesomecut-0.2.dmg",
-  "sha256": "8b05b54098849197d52b1317dfdc266440524d477f8f06f0ec2550cf78130c09",
-  "size": 656296,
+  "downloadURL": "https://github.com/ottlseo/awesomecut/releases/download/v0.3/awesomecut-0.3.dmg",
+  "sha256": "7c84ad0eb5d6f28e0007218aa44bfa719a96809492286cd35527cec5db68ca9c",
+  "size": 918780,
   "minimumSystemVersion": "13.0"
 }
