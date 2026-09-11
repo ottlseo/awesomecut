@@ -37,7 +37,9 @@ body{
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
 a{color:inherit;text-decoration:none;}
-img{max-width:100%;display:block;}
+/* width/height 를 적어 둔 그림이 있으므로 height 를 풀어 줘야 비율이 유지된다.
+   풀지 않으면 폭만 줄고 높이는 그대로여서 위아래로 늘어난다. */
+img{max-width:100%;height:auto;display:block;}
 ::selection{background:rgba(255,107,74,.2);}
 :focus-visible{outline:2px solid var(--coral);outline-offset:3px;border-radius:6px;}
 
@@ -96,7 +98,6 @@ nav .btn:hover{background:var(--coral);}
 .film .play::after{content:"";width:0;height:0;margin-left:4px;
   border-left:17px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;}
 .film .ph{position:absolute;bottom:1rem;font-family:var(--hand);font-size:1.15rem;color:var(--ink-3);}
-.film .cap{margin-top:.85rem;font-family:var(--mono);font-size:.72rem;color:var(--ink-3);text-align:center;}
 
 /* ── 로고: 요소가 하나씩 그려진다 ── */
 .logo{width:100%;overflow:visible;}
@@ -130,12 +131,8 @@ nav .btn:hover{background:var(--coral);}
 .logo .cap-box{stroke:var(--coral);fill:none;stroke-width:2.5;stroke-dasharray:5 6;}
 
 .tagline{margin-top:1.1rem;text-align:center;opacity:0;
-  animation:fadeUp .8s var(--ease) forwards;animation-delay:calc(9 * var(--step));}
+  animation:fadeUp .8s var(--ease) forwards;animation-delay:calc(8 * var(--step));}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
-.tagline p{font-size:.98rem;color:var(--ink-2);}
-.tagline .keys{font-family:var(--mono);font-size:.8rem;color:var(--coral);
-  background:rgba(255,107,74,.1);border:1px solid rgba(255,107,74,.28);
-  padding:.12em .5em;border-radius:7px;}
 .tagline .row{display:flex;gap:.6rem;justify-content:center;margin-top:1.1rem;flex-wrap:wrap;}
 .tagline .cta{font-size:.88rem;font-weight:600;padding:.6rem 1.2rem;border-radius:999px;
   transition:transform .25s var(--ease),box-shadow .25s ease;}
@@ -146,7 +143,7 @@ nav .btn:hover{background:var(--coral);}
 
 .scrollcue{position:absolute;bottom:1.6rem;left:0;right:0;text-align:center;
   font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;color:var(--ink-3);
-  opacity:0;animation:cue 1s var(--ease) forwards;animation-delay:calc(11 * var(--step));}
+  opacity:0;animation:cue 1s var(--ease) forwards;animation-delay:calc(9 * var(--step));}
 .scrollcue span{display:block;font-size:1rem;animation:bob 1.8s ease-in-out infinite;}
 @keyframes cue{from{opacity:0;}to{opacity:.9;}}
 @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
@@ -181,9 +178,6 @@ code{font-family:var(--mono);font-size:.86em;background:var(--tint);border:1px s
   border-radius:5px;padding:.08em .38em;color:var(--ink);}
 kbd{font-family:var(--mono);font-size:.86em;background:var(--card);border:1px solid var(--line-2);
   border-bottom-width:2px;border-radius:6px;padding:.1em .42em;color:var(--ink);}
-pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.95rem 1.1rem;
-  overflow-x:auto;margin:1rem 0;}
-pre code{background:none;border:0;padding:0;font-size:.82rem;line-height:1.7;color:var(--ink);}
 
 /* ══════════════════════ 설치 단계 ══════════════════════ */
 .steps{display:flex;flex-direction:column;gap:2.2rem;position:relative;}
@@ -317,7 +311,9 @@ footer a:hover{color:var(--coral);}
   </a>
   <a class="lnk" href="#install">설치</a>
   <a class="lnk" href="#trouble">문제 해결</a>
-  <a class="btn" href="#download">내려받기</a>
+  <!-- 릴리스 페이지를 거치지 않고 DMG 를 바로 받는다.
+       새 버전을 낼 때 이 페이지의 dmg 주소 세 곳을 함께 올린다. -->
+  <a class="btn" href="https://github.com/ottlseo/awesomecut/releases/download/v0.11/awesomecut-0.11.dmg">내려받기</a>
 </nav>
 
 <main id="top">
@@ -334,12 +330,11 @@ footer a:hover{color:var(--coral);}
         <div class="play" aria-hidden="true"></div>
         <div class="ph">활용법 영상 · 준비 중</div>
       </div>
-      <div class="cap">1분 만에 캡처하고 화살표 얹어 붙여넣기</div>
     </div>
 
     <div class="side">
       <!-- Assets/awesomecut_handwritten_logo.svg 를 옮긴 것이다.
-           도형 · 선 · 글씨가 한꺼번에 나오지 않고 --i 순서대로 260ms 씩 밀려 그려진다. -->
+           도형 · 선 · 글씨가 --i 순서대로 260ms 씩 밀려 그려진다. -->
       <!-- 원본은 0 0 680 360 이지만 여백을 잘라 로고가 화면에서 더 크게 보이게 한다. -->
       <svg class="logo" viewBox="132 8 416 338" role="img" aria-labelledby="lt ld">
         <title id="lt">awesomecut 로고</title>
@@ -355,20 +350,20 @@ footer a:hover{color:var(--coral);}
         <polygon class="el cursor" style="--i:4"
                  points="338,120 338,205 355,190 368,214 382,207 369,183 393,183"/>
 
+        <!-- 클릭 표시 세 개는 한 번에 튀어나온다. 같은 --i 를 쓴다. -->
         <line class="el spark" style="--i:5" x1="345" y1="88" x2="345" y2="110" stroke-width="8"/>
-        <line class="el spark" style="--i:6" x1="314" y1="98" x2="330" y2="114" stroke-width="8"/>
-        <line class="el spark" style="--i:7" x1="304" y1="136" x2="326" y2="136" stroke-width="8"/>
+        <line class="el spark" style="--i:5" x1="314" y1="98" x2="330" y2="114" stroke-width="8"/>
+        <line class="el spark" style="--i:5" x1="304" y1="136" x2="326" y2="136" stroke-width="8"/>
 
-        <text class="el word" style="--i:8" x="340" y="315" text-anchor="middle">awesomecut</text>
+        <text class="el word" style="--i:6" x="340" y="315" text-anchor="middle">awesomecut</text>
 
         <!-- 마지막에 캡처 영역처럼 점선이 한 번 둘린다 -->
-        <rect class="cap-box" style="--i:9" x="222" y="18" width="236" height="236" rx="10"/>
+        <rect class="cap-box" style="--i:7" x="222" y="18" width="236" height="236" rx="10"/>
       </svg>
 
       <div class="tagline">
-        <p>캡처하고 바로 손보고 붙여넣기 <span class="keys">⇧⌘2</span></p>
         <div class="row">
-          <a class="cta solid" href="#download">내려받기</a>
+          <a class="cta solid" href="https://github.com/ottlseo/awesomecut/releases/download/v0.11/awesomecut-0.11.dmg">내려받기</a>
           <a class="cta line" href="#install">설치 가이드</a>
         </div>
       </div>
@@ -385,7 +380,7 @@ footer a:hover{color:var(--coral);}
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="over">install</span>
-      <h2><mark>설치</mark>는 여섯 걸음</h2>
+      <h2><mark>설치</mark> 가이드</h2>
       <p>서명 없는 앱이라 첫 실행 경고를 한 번 넘기고, 화면 기록 권한을 한 번 켜야 합니다. 둘 다 처음 한 번만 합니다.</p>
     </div>
 
@@ -394,7 +389,7 @@ footer a:hover{color:var(--coral);}
       <div class="step reveal">
         <div class="n">1</div>
         <h3>DMG 내려받기</h3>
-        <p><a href="#download" style="color:var(--coral)">아래</a>에서 <code>awesomecut-0.11.dmg</code> 를 받습니다. 900KB, macOS 13 이상.</p>
+        <p><a href="https://github.com/ottlseo/awesomecut/releases/download/v0.11/awesomecut-0.11.dmg" style="color:var(--coral)"><code>awesomecut-0.11.dmg</code></a> 를 받습니다. 900KB, macOS 13 이상.</p>
       </div>
 
       <div class="step reveal">
@@ -559,21 +554,8 @@ footer a:hover{color:var(--coral);}
         <h3>awesomecut 0.11</h3>
         <div class="meta">DMG 900KB · macOS 13 이상 · Apple Silicon &amp; Intel</div>
       </div>
-      <a class="cta" href="https://github.com/ottlseo/awesomecut/releases/latest">GitHub Releases →</a>
+      <a class="cta" href="https://github.com/ottlseo/awesomecut/releases/download/v0.11/awesomecut-0.11.dmg">DMG 내려받기 ↓</a>
     </div>
-    <div class="note reveal">
-      <b>1.0 을 쓰고 있다면</b> 업데이트 알림이 가지 않습니다. 위에서 직접 받아 덮어써 주세요. 버전 이름은 1.0 → 0.11 로 내려간 것처럼 보이지만 빌드 번호는 올라갑니다.
-    </div>
-    <details class="reveal" style="border-top:1px solid var(--line)">
-      <summary>직접 빌드하기</summary>
-      <div class="a">
-        <p>Xcode 없이 swiftc 만으로 빌드합니다.</p>
-        <pre><code>git clone https://github.com/ottlseo/awesomecut.git
-cd awesomecut
-./build.sh     # awesomecut.app 생성
-./install.sh   # LaunchAgent 등록 후 실행</code></pre>
-      </div>
-    </details>
   </div>
 </section>
 
@@ -587,12 +569,12 @@ cd awesomecut
 </footer>
 
 <script>
-// 로고를 다 그린 뒤에 영상 자리를 연다. 마지막 요소(--i:9)가 끝나는 시점에 맞춘다.
+// 로고를 다 그린 뒤에 영상 자리를 연다. 마지막 요소(--i:7)가 끝나는 시점에 맞춘다.
 (function () {
   const stage = document.getElementById('stage');
   const step = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--step')) || 260;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  setTimeout(() => stage.classList.add('staged'), reduce ? 0 : step * 9 + 900);
+  setTimeout(() => stage.classList.add('staged'), reduce ? 0 : step * 7 + 900);
 })();
 
 // 스크롤에 맞춰 본문을 띄운다. IntersectionObserver 가 없으면 전부 보이게 둔다.
