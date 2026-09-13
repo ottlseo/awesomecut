@@ -122,14 +122,11 @@ nav .switch:hover{color:var(--coral);border-color:var(--coral);}
 
 /* ── 영상 자리 ── */
 .film .frame{position:relative;aspect-ratio:16/9;border-radius:20px;overflow:hidden;
-  background:var(--card);border:2px dashed var(--line-2);
+  background:var(--ink);border:1px solid var(--line-2);
   display:grid;place-items:center;box-shadow:0 18px 40px rgba(26,26,31,.06);}
-.film .frame video,.film .frame iframe{width:100%;height:100%;border:0;display:block;}
-.film .play{width:64px;height:64px;border-radius:50%;background:var(--coral);display:grid;place-items:center;
-  box-shadow:0 10px 24px rgba(255,107,74,.32);}
-.film .play::after{content:"";width:0;height:0;margin-left:4px;
-  border-left:17px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;}
-.film .ph{position:absolute;bottom:1rem;font-size:.92rem;font-weight:500;color:var(--ink-3);}
+/* 화면 녹화는 16:9 라 꼭 맞지만, 다시 찍은 영상의 비가 달라도 잘리지 않게 contain 으로 둔다. */
+.film .frame video,.film .frame iframe{width:100%;height:100%;border:0;display:block;
+  object-fit:contain;}
 
 /* ── 로고: 요소가 하나씩 그려진다 ── */
 .logo{width:100%;overflow:visible;}
@@ -308,14 +305,12 @@ footer a:hover{color:var(--coral);}
 <section class="hero" id="hero">
   <div class="stage" id="stage">
 
-    <!-- 영상 자리. 촬영한 파일이 준비되면 .frame 안을 아래 중 하나로 바꾼다.
-         <video src="video/howto.mp4" controls poster="img/howto-poster.png"></video>
-         <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe> -->
+    <!-- 활용법 영상. preload 를 metadata 로 두어 페이지를 열 때 18MB 를 다 받지 않고,
+         재생을 누른 사람만 받게 한다. 그동안 보이는 그림이 poster 다. -->
     <div class="film">
       <div class="frame">
-        <div class="play" aria-hidden="true"></div>
-        <div class="ph" lang="ko">활용법 영상 · 준비 중</div>
-        <div class="ph" lang="en">Usage video · coming</div>
+        <video src="video/awesomecut-demo.mp4" poster="img/demo-poster.jpg"
+               controls playsinline preload="metadata"></video>
       </div>
     </div>
 
